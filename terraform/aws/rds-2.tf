@@ -1,0 +1,44 @@
+resource "aws_rds_cluster" "app1-rds-cluster" {
+  cluster_identifier      = "app1-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 0
+  tags = {
+    yor_trace            = "b6f2c2ec-0715-46a0-83d4-502e588826d1"
+  }
+}
+
+resource "aws_rds_cluster" "app2-rds-cluster" {
+  cluster_identifier      = "app2-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 1
+  tags = {
+    yor_trace            = "d33c9292-952b-4c1f-9973-b6dbad519461"
+  }
+}
+
+resource "aws_rds_cluster" "app3-rds-cluster" {
+  cluster_identifier      = "app3-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 15
+  tags = {
+    yor_trace            = "2a8584b1-7e9d-4739-8e37-366620c92027"
+  }
+}
+
+resource "aws_rds_cluster" "app4-rds-cluster" {
+  cluster_identifier      = "app4-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 15
+  tags = {
+    yor_trace            = "284aaeed-fd3f-4b7a-b5f8-61a8457f4d83"
+  }
+}
+
+resource "aws_rds_cluster" "app5-rds-cluster" {
+  cluster_identifier      = "app5-rds-cluster"
+  allocated_storage       = 10
+  backup_retention_period = 15
+  tags = {
+    yor_trace            = "0b2bea23-5ca5-4bd1-956e-b9ed978daadf"
+  }
+}
