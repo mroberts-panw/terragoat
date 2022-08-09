@@ -1,4 +1,4 @@
 policy "prismacloud" {
-        source            = "/terraform/aws"
+        source            = "."
         enforcement_level = "hard-mandatory"
 }
