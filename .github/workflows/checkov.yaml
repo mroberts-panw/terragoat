@@ -12,14 +12,14 @@ jobs:
   checkov-job:
     runs-on: ubuntu-latest
     name: checkov-action
+    env:
+      PRISMA_API_URL: https://api4.prismacloud.io
     steps:
       - name: Checkout repo
         uses: actions/checkout@master
       - name: Run Checkov action
         id: checkov
         uses: bridgecrewio/checkov-action@master
-	env:
-	  PRISMA_API_URL: https://api4.prismacloud.io
         with:
           directory: '.'
           log_level: DEBUG
