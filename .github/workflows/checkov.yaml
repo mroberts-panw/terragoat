@@ -1,37 +1,39 @@
-name: build
+GitHub Action
+
+name: Checkov action
+
+# Controls when the action will run. Triggers the workflow on push or pull request
+# events but only for the master branch
 on:
   push:
-    branches:
-      - master
-jobs:
-  build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-        name: Checkout repo
-        with:
-          fetch-depth: 0
-      - name: Run yor action
-        uses: bridgecrewio/yor-action@main
-      - name: Set up Python ${{ matrix.python-version }}
-        uses: actions/setup-python@v1
-        with:
-          python-version: 3.7
-      - name: Update documentation
-        run: |
-          git config --local user.email "action@github.com"
-          git config --local user.name "GitHub Action"
-          git fetch --tags
-          git pull
-          latest_tag=$(git describe --tags `git rev-list --tags --max-count=1`)
-          echo "latest tag: $latest_tag"
-          new_tag=$(echo $latest_tag | awk -F. -v a="$1" -v b="$2" -v c="$3" '{printf("%d.%d.%d", $1+a, $2+b , $3+1)}')
-          echo "new tag: $new_tag"
+    branches: [ master ]
+  pull_request:
+    branches: [ master ]
 
-          pip install -U checkov
-          cat .github/template.md > README.md && checkov -d terraform -o github_failed_only -s >> README.md
-          git add README.md  || echo "No changes to commit"
-          git commit -m "update resource scan result doc" README.md || echo "No changes to commit"
-          git push origin
-          git tag $new_tag
-          git push origin $new_tag
+jobs:
+  checkov-job:
+    runs-on: ubuntu-latest
+    name: checkov-action
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@master
+      - name: Run Checkov action
+        id: checkov
+        uses: bridgecrewio/checkov-action@master
+	      env:
+          PRISMA_API_URL: https://api4.prismacloud.io
+        with:
+          directory: '.'
+          log_level: DEBUG
+          soft_fail: true
+          api-key: ${{ secrets.BC_API_KEY }}
+      - name: Expose report
+        uses: actions/upload-artifact@v2
+        with:
+          name: SARIF results
+          path: results.sarif
+      - uses: github/codeql-action/upload-sarif@v1
+        with:
+          # Path to SARIF file relative to the root of the repository
+          sarif_file: results.sarif
+
