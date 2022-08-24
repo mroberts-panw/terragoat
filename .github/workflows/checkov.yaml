@@ -18,8 +18,8 @@ jobs:
       - name: Run Checkov action
         id: checkov
         uses: bridgecrewio/checkov-action@master
-	      env:
-          PRISMA_API_URL: https://api4.prismacloud.io
+	env:
+	  PRISMA_API_URL: https://api4.prismacloud.io
         with:
           directory: '.'
           log_level: DEBUG
@@ -34,4 +34,3 @@ jobs:
         with:
           # Path to SARIF file relative to the root of the repository
           sarif_file: results.sarif
-
