@@ -60,5 +60,9 @@ resource azurerm_app_service "app-service2" {
     git_repo             = "terragoat"
     yor_trace            = "ec8295ab-af68-4cff-b0f1-b0cf5eaf1b75"
   }
+  identity = true
+  site_config {
+    http2_enabled = true
+  }
 }
 
